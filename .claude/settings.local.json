@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -oP '\"[^\"]{10,120}\"' \"c:/Users/EstebanVasquez/OneDrive - MSFT/Documents/GitHub/SISTEG Site/assets/index-Nyj33B-H.js\")",
+      "Bash(grep -o '\"[^\"]\\\\{15,200\\\\}\"' \"c:/Users/EstebanVasquez/OneDrive - MSFT/Documents/GitHub/SISTEG Site/assets/index-Nyj33B-H.js\")"
+    ]
+  }
+}

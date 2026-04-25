@@ -1,25 +1,924 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SISTEG - Transformación Digital e Inteligencia Tecnológica</title>
-    <meta name="description" content="SISTEG: soluciones tecnológicas inteligentes. Desarrollo web, IA, automatización y Microsoft 365. +17 años en Venezuela." />
-    <meta name="author" content="SISTEG" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SISTEG — Transformación Digital e Inteligencia Tecnológica</title>
+  <meta name="description" content="SISTEG: soluciones tecnológicas inteligentes para empresas en Latinoamérica y EE.UU. Desarrollo web, IA, automatización y Microsoft 365." />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#FBFBFA; --surface:#FFFFFF; --card:#F9F9F8; --border:#EAEAEA;
+      --text:#111111; --muted:#767676; --faint:#AAAAAA;
+      --tag-blue-bg:#E1F3FE;   --tag-blue-fg:#2b6cb0;
+      --tag-green-bg:#EDF3EC;  --tag-green-fg:#276749;
+      --tag-red-bg:#FDEBEC;    --tag-red-fg:#c53030;
+      --tag-yellow-bg:#FBF3DB; --tag-yellow-fg:#975a16;
+      --serif:'Newsreader','Playfair Display',Georgia,serif;
+      --sans:'DM Sans','Helvetica Neue',-apple-system,BlinkMacSystemFont,sans-serif;
+      --mono:'JetBrains Mono',ui-monospace,'Courier New',monospace;
+    }
+    html{scroll-behavior:smooth}
+    body{
+      font-family:var(--sans);background:var(--bg);color:var(--text);
+      font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;
+      transition:opacity .15s ease;
+    }
+    body::after{
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.028;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.13;letter-spacing:-.025em}
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+    .container{max-width:1200px;margin:0 auto;padding:0 40px}
 
-    <meta property="og:title" content="SISTEG - Transformación Digital" />
-    <meta property="og:description" content="Soluciones tecnológicas inteligentes para tu empresa." />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    /* ── Nav ── */
+    .nav{
+      position:fixed;top:0;inset-inline:0;z-index:200;
+      background:rgba(251,251,250,.9);
+      -webkit-backdrop-filter:blur(14px);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-inner{display:flex;align-items:center;justify-content:space-between;height:58px}
+    .nav-brand{display:flex;align-items:center;gap:8px}
+    .nav-brand img{height:24px;width:auto}
+    .nav-brand-name{font-family:var(--serif);font-size:17px;letter-spacing:-.01em}
+    .nav-right{display:flex;align-items:center;gap:20px}
+    .nav-menu{display:flex;align-items:center;gap:28px;list-style:none}
+    .nav-menu a{font-size:13px;color:var(--muted);transition:color .18s}
+    .nav-menu a:hover{color:var(--text)}
+    .nav-cta{
+      background:var(--text);color:#fff !important;
+      padding:9px 20px;font-size:13px;font-weight:500;
+      display:inline-flex;align-items:center;gap:6px;
+      transition:transform .15s ease;
+    }
+    .nav-cta:hover{transform:scale(.97)}
+    /* Language toggle */
+    .lang-switch{display:flex;border:1px solid var(--border)}
+    .lang-btn{
+      background:none;border:none;padding:6px 11px;
+      font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+      color:var(--faint);cursor:pointer;transition:all .15s;
+    }
+    .lang-btn+.lang-btn{border-left:1px solid var(--border)}
+    .lang-btn.active{background:var(--text);color:#fff}
+    .lang-btn:not(.active):hover{color:var(--text)}
+    /* Mobile toggle */
+    .nav-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--text);padding:4px;align-items:center}
+    .nav-icon-close{display:none}
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-    <script type="module" crossorigin src="/assets/index-Nyj33B-H.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BPQoFcg5.css">
-  </head>
+    /* ── Hero ── */
+    .hero{
+      min-height:100dvh;display:flex;align-items:center;
+      padding:120px 0 80px;border-bottom:1px solid var(--border);
+      position:relative;overflow:hidden;
+    }
+    /* Subtle dot grid — structural depth, not decorative gradient */
+    .hero::before{
+      content:'';position:absolute;inset:0;pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Ccircle cx='14' cy='14' r='1' fill='%23EAEAEA'/%3E%3C/svg%3E");
+      opacity:.5;
+    }
+    .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;position:relative}
+    .hero-eyebrow{
+      font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--faint);
+      margin-bottom:22px;display:flex;align-items:center;gap:10px;
+    }
+    .hero-eyebrow::before{content:'';display:block;width:24px;height:1px;background:currentColor}
+    .hero-title{font-size:clamp(38px,4.5vw,64px);line-height:1.07;letter-spacing:-.03em;margin-bottom:22px}
+    .hero-title em{font-style:italic;color:var(--muted)}
+    .hero-lead{font-size:16px;color:var(--muted);line-height:1.72;max-width:400px;margin-bottom:40px}
+    .hero-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+    .btn-primary{
+      background:var(--text);color:#fff;padding:13px 26px;
+      font-family:var(--sans);font-size:14px;font-weight:500;
+      display:inline-flex;align-items:center;gap:8px;
+      transition:transform .15s ease;cursor:pointer;border:none;
+    }
+    .btn-primary:hover{transform:scale(.98)}
+    .btn-ghost{font-size:14px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;transition:color .18s}
+    .btn-ghost:hover{color:var(--text)}
+    .hero-visual{position:relative}
+    .hero-frame{border:1px solid var(--border);overflow:hidden;position:relative}
+    .hero-frame img{width:100%;height:440px;object-fit:cover;filter:saturate(.35) sepia(.15) brightness(.97)}
+    .hero-badge{
+      position:absolute;bottom:20px;left:20px;
+      background:var(--surface);border:1px solid var(--border);padding:14px 18px;
+    }
+    .hero-badge-num{font-family:var(--serif);font-size:28px;line-height:1;letter-spacing:-.02em}
+    .hero-badge-label{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--faint);margin-top:2px}
 
-  <body>
-    <div id="root"></div>
-  </body>
+    /* ── Stats ── */
+    .stats{background:var(--surface);border-bottom:1px solid var(--border);padding:28px 0}
+    .stats-inner{display:flex;align-items:center;justify-content:space-around;gap:24px}
+    .stat{text-align:center}
+    .stat-val{font-family:var(--serif);font-size:30px;font-weight:400;letter-spacing:-.025em;line-height:1}
+    .stat-lbl{font-size:11px;color:var(--muted);letter-spacing:.02em;margin-top:4px}
+    .stat-sep{width:1px;height:44px;background:var(--border);flex-shrink:0}
+
+    /* ── Sections ── */
+    .section{padding:96px 0;border-bottom:1px solid var(--border)}
+    .section-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
+    .section-heading{font-size:clamp(26px,3vw,42px);letter-spacing:-.025em;line-height:1.15}
+
+    /* ── About ── */
+    .about-grid{display:grid;grid-template-columns:5fr 8fr;gap:80px;align-items:start}
+    .about-left{position:sticky;top:80px}
+    .about-body p{font-size:16px;color:var(--muted);line-height:1.78}
+    .about-body p+p{margin-top:18px}
+    .about-body strong{color:var(--text);font-weight:500}
+
+    /* ── Bento ── */
+    .services-header{margin-bottom:48px}
+    .services-heading{max-width:440px}
+    .bento{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+    .bento-cell{background:var(--surface);padding:36px 40px;transition:background .2s;position:relative}
+    .bento-cell.wide{grid-column:span 2}
+    .bento-cell:hover{background:var(--card)}
+    /* hover micro-arrow */
+    .bento-cell::after{
+      content:'→';position:absolute;bottom:28px;right:32px;
+      font-size:13px;color:var(--faint);opacity:0;
+      transition:opacity .2s,transform .2s;transform:translateX(-4px);
+    }
+    .bento-cell:hover::after{opacity:1;transform:translateX(0)}
+    .bento-icon{width:32px;height:32px;margin-bottom:18px;color:var(--text)}
+    .bento-tag{
+      display:inline-block;font-family:var(--mono);font-size:10px;
+      letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;margin-bottom:14px;
+    }
+    .tag-blue  {background:var(--tag-blue-bg);  color:var(--tag-blue-fg)}
+    .tag-green {background:var(--tag-green-bg); color:var(--tag-green-fg)}
+    .tag-red   {background:var(--tag-red-bg);   color:var(--tag-red-fg)}
+    .tag-yellow{background:var(--tag-yellow-bg);color:var(--tag-yellow-fg)}
+    .case-tag{display:inline-block;margin-bottom:18px}
+    .bento-cell h3{font-size:19px;letter-spacing:-.015em;margin-bottom:10px}
+    .bento-cell.wide h3{font-size:23px}
+    .bento-cell p{font-size:13.5px;color:var(--muted);line-height:1.65}
+
+    /* ── Cases ── */
+    .cases-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:48px}
+    .case-cell{background:var(--surface);padding:44px 48px}
+    .case-meta{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:18px}
+    .case-cell h3{font-size:22px;margin-bottom:14px}
+    .case-cell p{font-size:14px;color:var(--muted);line-height:1.7}
+
+    /* ── Contact ── */
+    .contact-section{padding:96px 0;background:var(--surface);border-bottom:1px solid var(--border)}
+    .contact-grid{display:grid;grid-template-columns:5fr 8fr;gap:80px;align-items:start}
+    .contact-left{position:sticky;top:80px}
+    .contact-left h2{font-size:clamp(28px,3vw,44px);margin-bottom:20px;line-height:1.12}
+    .contact-left p{font-size:15px;color:var(--muted);line-height:1.72;margin-bottom:32px}
+    .contact-details{display:flex;flex-direction:column;gap:12px}
+    .contact-row{display:flex;align-items:center;gap:10px}
+    .contact-row svg{color:var(--faint);flex-shrink:0}
+    .contact-row span{font-size:14px;color:var(--muted)}
+
+    /* ── Form ── */
+    .form-field{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+    .form-field label{font-size:12px;font-weight:500;color:var(--text);letter-spacing:.02em}
+    .form-opt{color:var(--faint);font-weight:400}
+    .form-field input,.form-field textarea,.form-field select{
+      width:100%;padding:11px 14px;
+      background:var(--bg);border:1px solid var(--border);
+      color:var(--text);font-family:var(--sans);font-size:14px;
+      outline:none;transition:border-color .15s;
+      -webkit-appearance:none;appearance:none;border-radius:0;
+    }
+    .form-field input::placeholder,.form-field textarea::placeholder{color:var(--faint)}
+    .form-field input:focus,.form-field textarea:focus,.form-field select:focus{border-color:var(--text)}
+    .form-field textarea{resize:vertical;min-height:116px}
+    .form-field select{
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23AAAAAA' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;cursor:pointer;
+    }
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .btn-submit{
+      width:100%;padding:14px 28px;background:var(--text);color:#fff;
+      font-family:var(--sans);font-size:14px;font-weight:500;border:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      transition:transform .15s ease,opacity .15s;margin-top:4px;
+    }
+    .btn-submit:hover{transform:scale(.99)}
+    .btn-submit:disabled{opacity:.55;cursor:not-allowed;transform:none}
+    .form-feedback{margin-top:14px;padding:12px 16px;font-size:13px;border-left:2px solid;display:none}
+    .form-feedback.success{display:block;background:var(--tag-green-bg);color:var(--tag-green-fg);border-color:var(--tag-green-fg)}
+    .form-feedback.error{display:block;background:var(--tag-red-bg);color:var(--tag-red-fg);border-color:var(--tag-red-fg)}
+
+    /* ── Footer ── */
+    .footer{padding:36px 0;background:var(--bg);border-top:1px solid var(--border)}
+    .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .footer-brand{font-family:var(--serif);font-size:15px;letter-spacing:-.01em}
+    .footer-nav{display:flex;gap:24px;list-style:none}
+    .footer-nav a{font-size:12px;color:var(--faint);transition:color .18s}
+    .footer-nav a:hover{color:var(--text)}
+    .footer-copy{font-family:var(--mono);font-size:11px;color:var(--faint)}
+
+    /* ── Spinner ── */
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .spinner{width:13px;height:13px;border:1.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .65s linear infinite;flex-shrink:0}
+
+    /* ── Reveal ── */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.25,.46,.45,.94),transform .6s cubic-bezier(.25,.46,.45,.94)}
+    .reveal.in{opacity:1;transform:translateY(0)}
+    .d1{transition-delay:80ms}
+    .d2{transition-delay:160ms}
+    .d3{transition-delay:240ms}
+    .d4{transition-delay:320ms}
+
+    /* ── Mobile ── */
+    @media(max-width:900px){
+      .container{padding:0 24px}
+      .nav-menu{display:none}
+      .nav-toggle{display:flex}
+      .lang-switch{display:none}
+      .nav-menu.open{
+        display:flex;flex-direction:column;position:fixed;
+        top:58px;left:0;right:0;
+        background:var(--bg);border-bottom:1px solid var(--border);
+        padding:20px 24px;gap:14px;z-index:199;
+      }
+      .nav-menu.open .lang-switch{display:flex;margin-top:4px;align-self:flex-start}
+      .nav-menu.open a{font-size:15px}
+      .hero-grid{grid-template-columns:1fr;gap:32px}
+      .hero-visual{display:none}
+      .hero{min-height:0;padding:100px 0 64px}
+      .stats-inner{flex-wrap:wrap;justify-content:center}
+      .stat-sep{display:none}
+      .about-grid{grid-template-columns:1fr;gap:28px}
+      .about-left{position:static}
+      .bento{grid-template-columns:1fr}
+      .bento-cell.wide{grid-column:span 1}
+      .bento-cell::after{display:none}
+      .cases-grid{grid-template-columns:1fr}
+      .contact-grid{grid-template-columns:1fr;gap:40px}
+      .contact-left{position:static}
+      .form-row{grid-template-columns:1fr;gap:0}
+      .footer-inner{flex-direction:column;gap:16px;text-align:center}
+      .footer-nav{justify-content:center}
+      .section{padding:64px 0}
+      .contact-section{padding:64px 0}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<header class="nav" role="banner">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#inicio" class="nav-brand">
+        <img src="/assets/Logo_Sisteg.png" alt="" aria-hidden="true" onerror="this.style.display='none'" />
+        <span class="nav-brand-name">SISTEG</span>
+      </a>
+      <div class="nav-right">
+        <ul class="nav-menu" id="navMenu" role="list">
+          <li><a href="#nosotros" data-i18n="nav.about">Nosotros</a></li>
+          <li><a href="#servicios" data-i18n="nav.services">Servicios</a></li>
+          <li><a href="#casos" data-i18n="nav.cases">Casos</a></li>
+          <li>
+            <a href="#contacto" class="nav-cta" data-i18n="nav.cta">Agendar consulta
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+            </a>
+          </li>
+          <li>
+            <div class="lang-switch" role="group" aria-label="Language / Idioma">
+              <button type="button" class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
+              <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+            </div>
+          </li>
+        </ul>
+        <div class="lang-switch" role="group" aria-label="Language / Idioma" id="langSwitchDesktop">
+          <button type="button" class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+        <button type="button" class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+          <svg id="iMenu" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+          <svg id="iClose" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" class="nav-icon-close"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- Hero -->
+  <section class="hero" id="inicio">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <p class="hero-eyebrow reveal" data-i18n="hero.eyebrow">Latinoamérica y USA · Desde 2009</p>
+          <h1 class="hero-title reveal d1" data-i18n="hero.title">Tecnología que<br>trabaja para tu<br><em>empresa</em></h1>
+          <p class="hero-lead reveal d2" data-i18n="hero.lead">Desarrollo web, inteligencia artificial y automatización a medida. Sin tecnicismos innecesarios, con resultados medibles.</p>
+          <div class="hero-actions reveal d3">
+            <a href="#contacto" class="btn-primary">
+              <span data-i18n="nav.cta">Agendar consulta</span>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
+            </a>
+            <a href="#servicios" class="btn-ghost">
+              <span data-i18n="hero.cta2">Ver servicios</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 2v8M2 7l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="hero-visual reveal d2" aria-hidden="true">
+          <div class="hero-frame">
+            <img src="/assets/hero-bg-BjwAJ4oV.jpg" alt="" />
+            <div class="hero-badge">
+              <div class="hero-badge-num">17+</div>
+              <div class="hero-badge-label" data-i18n="hero.badge">años de experiencia</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats" id="statsSection">
+    <div class="container">
+      <div class="stats-inner">
+        <div class="stat reveal">
+          <div class="stat-val" data-count="17" data-suffix="+">17+</div>
+          <div class="stat-lbl" data-i18n="stats.1.lbl">Años en el mercado</div>
+        </div>
+        <div class="stat-sep"></div>
+        <div class="stat reveal d1">
+          <div class="stat-val" data-count="5">5</div>
+          <div class="stat-lbl" data-i18n="stats.2.lbl">Áreas de especialización</div>
+        </div>
+        <div class="stat-sep"></div>
+        <div class="stat reveal d2">
+          <div class="stat-val" data-count="100" data-suffix="+">100+</div>
+          <div class="stat-lbl" data-i18n="stats.3.lbl">Proyectos completados</div>
+        </div>
+        <div class="stat-sep"></div>
+        <div class="stat reveal d3">
+          <div class="stat-val">LATAM</div>
+          <div class="stat-lbl" data-i18n="stats.4.lbl">Presencia regional</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section class="section" id="nosotros">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-left">
+          <p class="section-label reveal" data-i18n="about.label">Sobre nosotros</p>
+          <h2 class="section-heading reveal d1" data-i18n="about.heading">Quince años construyendo infraestructura tecnológica</h2>
+        </div>
+        <div class="about-body">
+          <p class="reveal" data-i18n="about.p1">Desde 2009, en SISTEG hemos acompañado a empresas en Latinoamérica y Estados Unidos en su camino hacia la transformación digital. Nacimos con la convicción de que <strong>la tecnología debe ser un aliado estratégico</strong>, no un lujo.</p>
+          <p class="reveal d1" data-i18n="about.p2">No vendemos productos genéricos. Analizamos la operación de cada cliente y diseñamos soluciones que encajan con su realidad: su industria, su escala y su equipo. El resultado es tecnología que funciona desde el primer día.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section" id="servicios">
+    <div class="container">
+      <div class="services-header">
+        <p class="section-label reveal" data-i18n="services.label">Servicios</p>
+        <h2 class="section-heading services-heading reveal d1" data-i18n="services.heading">Cada servicio diseñado para generar impacto real</h2>
+      </div>
+      <div class="bento" role="list">
+
+        <div class="bento-cell wide reveal" role="listitem">
+          <div class="bento-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square">
+              <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+          <span class="bento-tag tag-blue" data-i18n="s1.tag">Desarrollo Web</span>
+          <h3 data-i18n="s1.title">Aplicaciones a medida con tecnologías modernas</h3>
+          <p data-i18n="s1.body">Construimos plataformas web, sistemas internos y aplicaciones de escritorio con interfaces intuitivas y arquitecturas que escalan con tu negocio.</p>
+        </div>
+
+        <!-- CPU/Chip icon — represents AI processing, not a generic person -->
+        <div class="bento-cell reveal d1" role="listitem">
+          <div class="bento-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square">
+              <rect x="7" y="7" width="10" height="10"/>
+              <path d="M7 9H4M7 12H4M7 15H4M17 9h3M17 12h3M17 15h3M9 7V4M12 7V4M15 7V4M9 17v3M12 17v3M15 17v3"/>
+            </svg>
+          </div>
+          <span class="bento-tag tag-yellow" data-i18n="s2.tag">Inteligencia Artificial</span>
+          <h3 data-i18n="s2.title">IA que decide y aprende</h3>
+          <p data-i18n="s2.body">Implementamos agentes y modelos de IA que automatizan decisiones, procesan documentos y potencian la productividad de tu equipo.</p>
+        </div>
+
+        <div class="bento-cell reveal d1" role="listitem">
+          <div class="bento-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square">
+              <circle cx="5" cy="6" r="2" fill="none"/><circle cx="19" cy="18" r="2" fill="none"/>
+              <path d="M7 6h4c2.2 0 4 1.8 4 4s1.8 4 4 4"/>
+              <path d="M22 15l-3 3 3 3"/>
+            </svg>
+          </div>
+          <span class="bento-tag tag-green" data-i18n="s3.tag">Automatización</span>
+          <h3 data-i18n="s3.title">Flujos que trabajan sin descanso</h3>
+          <p data-i18n="s3.body">Eliminamos tareas repetitivas con flujos inteligentes que ahorran tiempo y reducen errores en tu operación diaria.</p>
+        </div>
+
+        <div class="bento-cell reveal d2" role="listitem">
+          <div class="bento-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square">
+              <rect x="2" y="3" width="20" height="14"/><path d="M8 21h8M12 17v4"/>
+            </svg>
+          </div>
+          <span class="bento-tag tag-blue" data-i18n="s4.tag">Microsoft 365</span>
+          <h3 data-i18n="s4.title">Toda la suite Microsoft</h3>
+          <p data-i18n="s4.body">Implementación, migración y soporte especializado para Teams, SharePoint, Exchange y Power Platform.</p>
+        </div>
+
+        <div class="bento-cell reveal d2" role="listitem">
+          <div class="bento-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+              <polyline points="17 6 23 6 23 12"/>
+            </svg>
+          </div>
+          <span class="bento-tag tag-red" data-i18n="s5.tag">Transformación Digital</span>
+          <h3 data-i18n="s5.title">Estrategia con resultados medibles</h3>
+          <p data-i18n="s5.body">Diagnóstico tecnológico y asesoría estratégica para llevar tu empresa al siguiente nivel con un plan claro y ejecutable.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Cases -->
+  <section class="section" id="casos">
+    <div class="container">
+      <p class="section-label reveal" data-i18n="cases.label">Casos de uso</p>
+      <h2 class="section-heading reveal d1" data-i18n="cases.heading">Trabajo real, resultados concretos</h2>
+      <div class="cases-grid">
+        <div class="case-cell reveal d1">
+          <p class="case-meta" data-i18n="c1.meta">Empresa · Sector financiero</p>
+          <span class="bento-tag tag-green case-tag" data-i18n="s3.tag">Automatización</span>
+          <h3 data-i18n="c1.title">Plataforma unificada de operaciones</h3>
+          <p data-i18n="c1.body">Sistema de automatización que conectó inventario, ventas y logística en una sola plataforma, eliminando transferencias manuales entre departamentos y reduciendo errores de conciliación.</p>
+        </div>
+        <div class="case-cell reveal d2">
+          <p class="case-meta" data-i18n="c2.meta">Firma de consultoría legal</p>
+          <span class="bento-tag tag-blue case-tag" data-i18n="s4.tag">Microsoft 365</span>
+          <h3 data-i18n="c2.title">Migración completa a Microsoft 365</h3>
+          <p data-i18n="c2.body">Migración de 80 usuarios desde servidores locales a Microsoft 365 en menos de dos semanas, con cero pérdida de datos y capacitación incluida para todo el equipo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact-section" id="contacto">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-left">
+          <p class="section-label reveal" data-i18n="contact.label">Contacto</p>
+          <h2 class="reveal d1" data-i18n="contact.heading">Cuéntanos qué necesita tu empresa</h2>
+          <p class="reveal d2" data-i18n="contact.lead">Ya sea una aplicación web, automatizar procesos o implementar IA, estamos aquí para ayudarte a dar el siguiente paso con claridad.</p>
+          <div class="contact-details reveal d3">
+            <div class="contact-row">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" aria-hidden="true"><rect x="2" y="4" width="20" height="16"/><polyline points="2 4 12 13 22 4"/></svg>
+              <span>info@sisteg.net</span>
+            </div>
+            <div class="contact-row">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <span data-i18n="contact.location">Latinoamérica y EE.UU.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal d1">
+          <form id="contactForm" novalidate>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="nombre" data-i18n="form.nombre.label">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" autocomplete="name" required
+                  data-i18n-ph="form.nombre.ph" placeholder="María González" />
+              </div>
+              <div class="form-field">
+                <label for="correo" data-i18n="form.correo.label">Correo electrónico</label>
+                <input type="email" id="correo" name="correo" autocomplete="email" required
+                  data-i18n-ph="form.correo.ph" placeholder="maria@empresa.com" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-field">
+                <label for="empresa" data-i18n="form.empresa.label">Empresa</label>
+                <input type="text" id="empresa" name="empresa" autocomplete="organization"
+                  data-i18n-ph="form.empresa.ph" placeholder="Nombre de tu empresa" />
+              </div>
+              <div class="form-field">
+                <label for="telefono">
+                  <span data-i18n="form.telefono.label">Teléfono</span>
+                  <span class="form-opt" data-i18n="form.opt">(opcional)</span>
+                </label>
+                <input type="tel" id="telefono" name="telefono" autocomplete="tel"
+                  data-i18n-ph="form.telefono.ph" placeholder="+1 786 000 0000" />
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="servicio" data-i18n="form.servicio.label">Área de interés</label>
+              <select id="servicio" name="servicio">
+                <option value="" data-i18n="select.default">Selecciona un servicio</option>
+                <option value="desarrollo-web" data-i18n="s1.tag">Desarrollo Web</option>
+                <option value="inteligencia-artificial" data-i18n="s2.tag">Inteligencia Artificial</option>
+                <option value="automatizacion" data-i18n="s3.tag">Automatización</option>
+                <option value="microsoft-365" data-i18n="s4.tag">Microsoft 365</option>
+                <option value="transformacion-digital" data-i18n="s5.tag">Transformación Digital</option>
+                <option value="otro" data-i18n="select.other">Otro</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="mensaje" data-i18n="form.mensaje.label">Cuéntanos sobre tu proyecto</label>
+              <textarea id="mensaje" name="mensaje" required
+                data-i18n-ph="form.mensaje.ph" placeholder="Describe brevemente qué necesitas lograr..."></textarea>
+            </div>
+            <button type="submit" class="btn-submit" id="submitBtn">
+              <span id="btnLabel" data-i18n="form.submit">Enviar mensaje</span>
+              <svg id="btnIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" aria-hidden="true">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+            <div class="form-feedback" id="formFeedback" role="alert" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-brand">SISTEG</span>
+      <nav><ul class="footer-nav">
+        <li><a href="#nosotros" data-i18n="nav.about">Nosotros</a></li>
+        <li><a href="#servicios" data-i18n="nav.services">Servicios</a></li>
+        <li><a href="#contacto" data-i18n="nav.contact">Contacto</a></li>
+      </ul></nav>
+      <span class="footer-copy" data-i18n="footer.copy">&copy; 2025 SISTEG. Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+'use strict';
+
+/* ─────────────────────────────────────────────────────────
+ * Webhook n8n — reemplaza con tu URL real antes de publicar
+ * Ejemplo: 'https://tu-n8n.com/webhook/abc123-...'
+ * ───────────────────────────────────────────────────────── */
+const N8N_WEBHOOK_URL = 'YOUR_N8N_WEBHOOK_URL';
+
+/* ── Translations ────────────────────────────────────────── */
+const T = {
+  es: {
+    'page.title':   'SISTEG — Transformación Digital e Inteligencia Tecnológica',
+    'page.desc':    'SISTEG: soluciones tecnológicas inteligentes para empresas en Latinoamérica y EE.UU. Desarrollo web, IA, automatización y Microsoft 365.',
+    'nav.about':    'Nosotros',
+    'nav.services': 'Servicios',
+    'nav.cases':    'Casos',
+    'nav.cta':      'Agendar consulta',
+    'nav.contact':  'Contacto',
+    'hero.eyebrow': 'Latinoamérica y USA · Desde 2009',
+    'hero.title':   'Tecnología que<br>trabaja para tu<br><em>empresa</em>',
+    'hero.lead':    'Desarrollo web, inteligencia artificial y automatización a medida. Sin tecnicismos innecesarios, con resultados medibles.',
+    'hero.cta2':    'Ver servicios',
+    'hero.badge':   'años de experiencia',
+    'stats.1.lbl':  'Años en el mercado',
+    'stats.2.lbl':  'Áreas de especialización',
+    'stats.3.lbl':  'Proyectos completados',
+    'stats.4.lbl':  'Presencia regional',
+    'about.label':  'Sobre nosotros',
+    'about.heading':'Quince años construyendo infraestructura tecnológica',
+    'about.p1':     'Desde 2009, en SISTEG hemos acompañado a empresas en Latinoamérica y Estados Unidos en su camino hacia la transformación digital. Nacimos con la convicción de que <strong>la tecnología debe ser un aliado estratégico</strong>, no un lujo.',
+    'about.p2':     'No vendemos productos genéricos. Analizamos la operación de cada cliente y diseñamos soluciones que encajan con su realidad: su industria, su escala y su equipo. El resultado es tecnología que funciona desde el primer día.',
+    'services.label':   'Servicios',
+    'services.heading': 'Cada servicio diseñado para generar impacto real',
+    's1.tag':   'Desarrollo Web',
+    's1.title': 'Aplicaciones a medida con tecnologías modernas',
+    's1.body':  'Construimos plataformas web, sistemas internos y aplicaciones de escritorio con interfaces intuitivas y arquitecturas que escalan con tu negocio.',
+    's2.tag':   'Inteligencia Artificial',
+    's2.title': 'IA que decide y aprende',
+    's2.body':  'Implementamos agentes y modelos de IA que automatizan decisiones, procesan documentos y potencian la productividad de tu equipo.',
+    's3.tag':   'Automatización',
+    's3.title': 'Flujos que trabajan sin descanso',
+    's3.body':  'Eliminamos tareas repetitivas con flujos inteligentes que ahorran tiempo y reducen errores en tu operación diaria.',
+    's4.tag':   'Microsoft 365',
+    's4.title': 'Toda la suite Microsoft',
+    's4.body':  'Implementación, migración y soporte especializado para Teams, SharePoint, Exchange y Power Platform.',
+    's5.tag':   'Transformación Digital',
+    's5.title': 'Estrategia con resultados medibles',
+    's5.body':  'Diagnóstico tecnológico y asesoría estratégica para llevar tu empresa al siguiente nivel con un plan claro y ejecutable.',
+    'cases.label':   'Casos de uso',
+    'cases.heading': 'Trabajo real, resultados concretos',
+    'c1.meta':  'Empresa · Sector financiero',
+    'c1.title': 'Plataforma unificada de operaciones',
+    'c1.body':  'Sistema de automatización que conectó inventario, ventas y logística en una sola plataforma, eliminando transferencias manuales entre departamentos y reduciendo errores de conciliación.',
+    'c2.meta':  'Firma de consultoría legal',
+    'c2.title': 'Migración completa a Microsoft 365',
+    'c2.body':  'Migración de 80 usuarios desde servidores locales a Microsoft 365 en menos de dos semanas, con cero pérdida de datos y capacitación incluida para todo el equipo.',
+    'contact.label':    'Contacto',
+    'contact.heading':  'Cuéntanos qué necesita tu empresa',
+    'contact.lead':     'Ya sea una aplicación web, automatizar procesos o implementar IA, estamos aquí para ayudarte a dar el siguiente paso con claridad.',
+    'contact.location': 'Latinoamérica y EE.UU.',
+    'form.nombre.label':  'Nombre completo',
+    'form.correo.label':  'Correo electrónico',
+    'form.empresa.label': 'Empresa',
+    'form.telefono.label':'Teléfono',
+    'form.servicio.label':'Área de interés',
+    'form.mensaje.label': 'Cuéntanos sobre tu proyecto',
+    'form.opt':     '(opcional)',
+    'form.submit':  'Enviar mensaje',
+    'form.sending': 'Enviando...',
+    'form.nombre.ph':  'María González',
+    'form.correo.ph':  'maria@empresa.com',
+    'form.empresa.ph': 'Nombre de tu empresa',
+    'form.telefono.ph':'+1 786 000 0000',
+    'form.mensaje.ph': 'Describe brevemente qué necesitas lograr...',
+    'select.default': 'Selecciona un servicio',
+    'select.other':   'Otro',
+    'feedback.ok':  'Mensaje enviado. Nos pondremos en contacto en menos de 24 horas.',
+    'err.nombre':   'Por favor ingresa tu nombre completo.',
+    'err.correo':   'Por favor ingresa un correo electrónico válido.',
+    'err.mensaje':  'Por favor describe brevemente tu proyecto.',
+    'err.server':   'No se pudo enviar el mensaje. Intenta de nuevo o escríbenos a info@sisteg.net',
+    'footer.copy':  '© 2025 SISTEG. Todos los derechos reservados.',
+    'aria.menu':    'Abrir menú',
+  },
+  en: {
+    'page.title':   'SISTEG — Digital Transformation & Technology Intelligence',
+    'page.desc':    'SISTEG: intelligent technology solutions for companies across Latin America and the United States. Web development, AI, automation and Microsoft 365.',
+    'nav.about':    'About',
+    'nav.services': 'Services',
+    'nav.cases':    'Cases',
+    'nav.cta':      'Schedule a call',
+    'nav.contact':  'Contact',
+    'hero.eyebrow': 'Latin America & USA · Since 2009',
+    'hero.title':   'Technology that<br>works for your<br><em>business</em>',
+    'hero.lead':    'Custom web development, artificial intelligence, and automation. No jargon. Measurable results.',
+    'hero.cta2':    'Our services',
+    'hero.badge':   'years of experience',
+    'stats.1.lbl':  'Years in business',
+    'stats.2.lbl':  'Practice areas',
+    'stats.3.lbl':  'Projects delivered',
+    'stats.4.lbl':  'Regional presence',
+    'about.label':  'About us',
+    'about.heading':'Fifteen years building technology infrastructure',
+    'about.p1':     'Since 2009, SISTEG has guided companies across Latin America and the United States on their digital transformation journey. We were founded on the belief that <strong>technology should be a strategic ally</strong>, not a luxury.',
+    'about.p2':     "We don't sell generic products. We analyze each client's operations and design solutions that fit their reality: their industry, their scale, their team. The result is technology that works from day one.",
+    'services.label':   'Services',
+    'services.heading': 'Every service built to create real impact',
+    's1.tag':   'Web Development',
+    's1.title': 'Applications built to scale',
+    's1.body':  'We build web platforms, internal systems and desktop apps with intuitive interfaces and architectures that grow with your business.',
+    's2.tag':   'Artificial Intelligence',
+    's2.title': 'AI that decides and learns',
+    's2.body':  "We implement AI agents and models that automate decisions, process documents and amplify your team's productivity.",
+    's3.tag':   'Automation',
+    's3.title': 'Workflows that run around the clock',
+    's3.body':  'We eliminate repetitive tasks with intelligent flows that save time and reduce errors in your daily operations.',
+    's4.tag':   'Microsoft 365',
+    's4.title': 'The full Microsoft suite',
+    's4.body':  'Implementation, migration and specialized support for Teams, SharePoint, Exchange and Power Platform.',
+    's5.tag':   'Digital Transformation',
+    's5.title': 'Strategy with measurable results',
+    's5.body':  'Technology assessment and strategic advisory to take your business to the next level with a clear, executable plan.',
+    'cases.label':   'Case studies',
+    'cases.heading': 'Real work, concrete results',
+    'c1.meta':  'Company · Financial sector',
+    'c1.title': 'Unified operations platform',
+    'c1.body':  'An automation system that connected inventory, sales and logistics into a single platform—eliminating manual handoffs between departments and reducing reconciliation errors.',
+    'c2.meta':  'Legal consulting firm',
+    'c2.title': 'Full Microsoft 365 migration',
+    'c2.body':  'Migration of 80 users from on-premises servers to Microsoft 365 in under two weeks, with zero data loss and full team training included.',
+    'contact.label':    'Contact',
+    'contact.heading':  'Tell us what your business needs',
+    'contact.lead':     "Whether it's a web application, process automation, or AI implementation—we're here to help you take the next step with clarity.",
+    'contact.location': 'Latin America & United States',
+    'form.nombre.label':  'Full name',
+    'form.correo.label':  'Email address',
+    'form.empresa.label': 'Company',
+    'form.telefono.label':'Phone',
+    'form.servicio.label':'Area of interest',
+    'form.mensaje.label': 'Tell us about your project',
+    'form.opt':     '(optional)',
+    'form.submit':  'Send message',
+    'form.sending': 'Sending...',
+    'form.nombre.ph':  'Alexandra Reyes',
+    'form.correo.ph':  'alex@company.com',
+    'form.empresa.ph': 'Your company name',
+    'form.telefono.ph':'+1 786 000 0000',
+    'form.mensaje.ph': 'Briefly describe what you need to accomplish...',
+    'select.default': 'Select a service',
+    'select.other':   'Other',
+    'feedback.ok':  "Message sent. We'll be in touch within 24 hours.",
+    'err.nombre':   'Please enter your full name.',
+    'err.correo':   'Please enter a valid email address.',
+    'err.mensaje':  'Please briefly describe your project.',
+    'err.server':   'Message could not be sent. Please try again or email us at info@sisteg.net',
+    'footer.copy':  '© 2025 SISTEG. All rights reserved.',
+    'aria.menu':    'Open menu',
+  }
+};
+
+/* ── Language system ─────────────────────────────────────── */
+let lang = 'es';
+
+function applyLang(l) {
+  const t = T[l];
+  if (!t) return;
+
+  // Fade transition
+  document.body.style.opacity = '.85';
+
+  setTimeout(() => {
+    lang = l;
+    document.documentElement.lang = l;
+    document.title = t['page.title'];
+    document.querySelector('meta[name="description"]').content = t['page.desc'];
+
+    // innerHTML / textContent
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (t[key] === undefined) return;
+      el.tagName === 'OPTION' ? (el.textContent = t[key]) : (el.innerHTML = t[key]);
+    });
+
+    // Placeholder attributes
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const key = el.dataset.i18nPh;
+      if (t[key] !== undefined) el.placeholder = t[key];
+    });
+
+    // Update all lang-btn states
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      const active = btn.dataset.lang === l;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+
+    localStorage.setItem('sisteg-lang', l);
+    document.body.style.opacity = '1';
+  }, 100);
+}
+
+// Init language from storage or browser preference
+(function initLang() {
+  const stored  = localStorage.getItem('sisteg-lang');
+  const browser = navigator.language.toLowerCase().startsWith('en') ? 'en' : 'es';
+  applyLang(stored || browser);
+})();
+
+// Lang button clicks (handles both desktop and mobile instances)
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.lang-btn');
+  if (btn && btn.dataset.lang && btn.dataset.lang !== lang) applyLang(btn.dataset.lang);
+});
+
+/* ── Mobile nav ─────────────────────────────────────────── */
+const navToggle = document.getElementById('navToggle');
+const navMenu   = document.getElementById('navMenu');
+const iMenu     = document.getElementById('iMenu');
+const iClose    = document.getElementById('iClose');
+
+navToggle.addEventListener('click', () => {
+  const open = navMenu.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', String(open));
+  iMenu.classList.toggle('nav-icon-close', open);
+  iClose.classList.toggle('nav-icon-close', !open);
+});
+
+navMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    navMenu.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    iMenu.classList.remove('nav-icon-close');
+    iClose.classList.add('nav-icon-close');
+  });
+});
+
+/* ── Intersection Observer — reveal animations ───────────── */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(({ target, isIntersecting }) => {
+    if (isIntersecting) { target.classList.add('in'); io.unobserve(target); }
+  });
+}, { threshold: 0.07, rootMargin: '0px 0px -28px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ── Stat counter animation ──────────────────────────────── */
+let countered = false;
+const statsIo = new IntersectionObserver(([entry]) => {
+  if (!entry.isIntersecting || countered) return;
+  countered = true;
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const end = +el.dataset.count;
+    const sfx = el.dataset.suffix || '';
+    const dur = 900;
+    const t0  = performance.now();
+    const tick = t => {
+      const p = Math.min((t - t0) / dur, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(e * end) + sfx;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  });
+  statsIo.disconnect();
+}, { threshold: 0.5 });
+
+const statsEl = document.getElementById('statsSection');
+if (statsEl) statsIo.observe(statsEl);
+
+/* ── Contact form ────────────────────────────────────────── */
+const form      = document.getElementById('contactForm');
+const submitBtn = document.getElementById('submitBtn');
+const btnLabel  = document.getElementById('btnLabel');
+const btnIcon   = document.getElementById('btnIcon');
+const feedback  = document.getElementById('formFeedback');
+
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const t = T[lang];
+
+  const nombre   = val('nombre');
+  const correo   = val('correo');
+  const empresa  = val('empresa');
+  const telefono = val('telefono');
+  const servicio = document.getElementById('servicio').value;
+  const mensaje  = val('mensaje');
+
+  if (!nombre)              { say(t['err.nombre'],  'error'); return; }
+  if (!correo || !email(correo)) { say(t['err.correo'],  'error'); return; }
+  if (!mensaje)             { say(t['err.mensaje'], 'error'); return; }
+
+  setLoading(true);
+
+  const payload = { nombre, correo, empresa, telefono, servicio, mensaje,
+    idioma: lang, timestamp: new Date().toISOString(), origen: window.location.href };
+
+  try {
+    if (N8N_WEBHOOK_URL === 'YOUR_N8N_WEBHOOK_URL') {
+      await wait(1100);
+      say(t['feedback.ok'], 'success');
+      form.reset();
+    } else {
+      const res = await fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) { say(t['feedback.ok'], 'success'); form.reset(); }
+      else throw new Error('HTTP ' + res.status);
+    }
+  } catch (err) {
+    console.error('[SISTEG]', err);
+    say(T[lang]['err.server'], 'error');
+  } finally {
+    setLoading(false);
+  }
+});
+
+function val(id)  { return document.getElementById(id).value.trim(); }
+function email(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s); }
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function say(msg, type) {
+  feedback.textContent = msg;
+  feedback.className   = 'form-feedback ' + type;
+  feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function setLoading(on) {
+  submitBtn.disabled = on;
+  if (on) {
+    btnLabel.textContent  = T[lang]['form.sending'];
+    btnIcon.style.display = 'none';
+    const sp = Object.assign(document.createElement('div'), { className: 'spinner', id: 'sp' });
+    submitBtn.appendChild(sp);
+  } else {
+    btnLabel.innerHTML    = T[lang]['form.submit'];
+    btnIcon.style.display = '';
+    document.getElementById('sp')?.remove();
+  }
+}
+</script>
+</body>
 </html>
