@@ -47,8 +47,7 @@
     }
     .nav-inner{display:flex;align-items:center;justify-content:space-between;height:58px}
     .nav-brand{display:flex;align-items:center;gap:8px}
-    .nav-brand img{height:24px;width:auto}
-    .nav-brand-name{font-family:var(--serif);font-size:17px;letter-spacing:-.01em}
+    .nav-brand img{height:36px;width:auto}
     .nav-right{display:flex;align-items:center;gap:20px}
     .nav-menu{display:flex;align-items:center;gap:28px;list-style:none}
     .nav-menu a{font-size:13px;color:var(--muted);transition:color .18s}
@@ -276,8 +275,7 @@
   <div class="container">
     <div class="nav-inner">
       <a href="#inicio" class="nav-brand">
-        <img src="/assets/Logo_Sisteg.png" alt="" aria-hidden="true" onerror="this.style.display='none'" />
-        <span class="nav-brand-name">SISTEG</span>
+        <img src="assets/Logo_Sisteg.png" alt="SISTEG" />
       </a>
       <div class="nav-right">
         <ul class="nav-menu" id="navMenu" role="list">
@@ -296,10 +294,6 @@
             </div>
           </li>
         </ul>
-        <div class="lang-switch" role="group" aria-label="Language / Idioma" id="langSwitchDesktop">
-          <button type="button" class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
-          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
-        </div>
         <button type="button" class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
           <svg id="iMenu" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
           <svg id="iClose" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" class="nav-icon-close"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/></svg>
