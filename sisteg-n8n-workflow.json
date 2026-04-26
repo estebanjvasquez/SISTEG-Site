@@ -1,0 +1,140 @@
+{
+  "name": "SISTEG — Leads del Formulario de Contacto",
+  "nodes": [
+    {
+      "id": "node-001-webhook",
+      "name": "Webhook Formulario",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [200, 300],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sisteg-contacto",
+        "responseMode": "onReceived",
+        "responseCode": "200",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      }
+    },
+    {
+      "id": "node-002-sheets",
+      "name": "Crear Lead en Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [440, 300],
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "REEMPLAZAR_CON_ID_DE_SPREADSHEET",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Leads",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Fecha": "={{ $('Webhook Formulario').item.json.body.timestamp }}",
+            "Nombre": "={{ $('Webhook Formulario').item.json.body.nombre }}",
+            "Correo": "={{ $('Webhook Formulario').item.json.body.correo }}",
+            "Empresa": "={{ $('Webhook Formulario').item.json.body.empresa }}",
+            "Telefono": "={{ $('Webhook Formulario').item.json.body.telefono }}",
+            "Servicio": "={{ $('Webhook Formulario').item.json.body.servicio }}",
+            "Mensaje": "={{ $('Webhook Formulario').item.json.body.mensaje }}",
+            "Idioma": "={{ $('Webhook Formulario').item.json.body.idioma }}",
+            "Origen": "={{ $('Webhook Formulario').item.json.body.origen }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "node-003-calendar",
+      "name": "Obtener Eventos Calendario",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "primary",
+          "mode": "id"
+        },
+        "returnAll": true,
+        "additionalFields": {
+          "timeMin": "={{ $now.toISO() }}",
+          "timeMax": "={{ $now.plus({days: 21}).toISO() }}"
+        },
+        "options": {
+          "singleEvents": true,
+          "orderBy": "startTime"
+        }
+      }
+    },
+    {
+      "id": "node-004-code",
+      "name": "Horarios y Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [920, 300],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Eventos del calendario recibidos del nodo anterior\nconst events = $input.all().map(item => item.json);\n\n// Datos originales del formulario\nconst form = $('Webhook Formulario').first().json.body;\nconst lang = form.idioma || 'es';\nconst isEN = lang === 'en';\n\n// ⚙️ Ajustar zona horaria según tu región\nconst TZ = 'America/Bogota';\nconst SLOT_MS = 3600000; // 1 hora en ms\n\n// Construir períodos ocupados desde eventos del calendario\nconst busy = events\n  .filter(ev => ev.start)\n  .map(ev => ({\n    start: new Date(ev.start.dateTime || ev.start.date + 'T00:00:00'),\n    end:   new Date(ev.end.dateTime   || ev.end.date   + 'T23:59:59')\n  }));\n\n// Buscar 3 slots libres: Lunes-Viernes 9:00–17:00, próximos 21 días\nconst slots = [];\nconst c = new Date();\nc.setMinutes(0, 0, 0);\nc.setHours(c.getHours() + 1);\nconst cutoff = new Date(Date.now() + 21 * 24 * 3600000);\n\nwhile (c < cutoff && slots.length < 3) {\n  const day  = c.getDay();\n  const hour = c.getHours();\n\n  // Saltar fines de semana\n  if (day === 0 || day === 6) {\n    c.setDate(c.getDate() + (day === 0 ? 1 : 2));\n    c.setHours(9, 0, 0, 0);\n    continue;\n  }\n\n  // Ajustar a horario laboral\n  if (hour < 9)  { c.setHours(9, 0, 0, 0); continue; }\n  if (hour >= 17) { c.setDate(c.getDate() + 1); c.setHours(9, 0, 0, 0); continue; }\n\n  const slotEnd = new Date(c.getTime() + SLOT_MS);\n  const conflict = busy.some(b => c < b.end && slotEnd > b.start);\n\n  if (!conflict) {\n    slots.push({\n      es: c.toLocaleString('es-ES', {\n        weekday: 'long', day: 'numeric', month: 'long',\n        hour: '2-digit', minute: '2-digit', timeZone: TZ\n      }),\n      en: c.toLocaleString('en-US', {\n        weekday: 'long', month: 'long', day: 'numeric',\n        hour: '2-digit', minute: '2-digit', timeZone: TZ\n      })\n    });\n    c.setTime(slotEnd.getTime());\n  } else {\n    c.setHours(c.getHours() + 1);\n  }\n}\n\n// Preparar HTML del email\nconst lbl = s => isEN ? s.en : s.es;\n\nconst noSlotsMsg = isEN\n  ? 'Our team will contact you directly to schedule a meeting.'\n  : 'Nuestro equipo te contactará directamente para coordinar un horario.';\n\nconst slotsHtml = slots.length\n  ? slots.map((s, i) => `<li style='margin:0 0 10px;padding:12px 16px;background:#F9F9F8;border-left:3px solid #111111;list-style:none;font-size:14px;color:#111111;'><b>Opci&#243;n ${i + 1}:</b> ${lbl(s)}</li>`).join('')\n  : `<li style='list-style:none;font-size:14px;color:#767676;'>${noSlotsMsg}</li>`;\n\nconst emailSubject = isEN\n  ? 'We received your message \\u2014 SISTEG'\n  : 'Recibimos tu mensaje \\u2014 SISTEG';\n\nconst intro1 = isEN\n  ? `Thank you for contacting SISTEG. We have received your message and our team will review it shortly.`\n  : `Gracias por contactar a SISTEG. Hemos recibido tu mensaje y nuestro equipo lo revisar&#225; a la brevedad.`;\n\nconst intro2 = isEN\n  ? `To schedule our first conversation, here are <b>3 available time slots</b>:`\n  : `Para agendar nuestra primera conversaci&#243;n, aqu&#237; tienes <b>3 opciones de horario disponibles</b>:`;\n\nconst closing1 = isEN\n  ? `Simply reply to this email with your preferred time, or suggest an alternative that works better for you.`\n  : `Solo responde este correo indicando qu&#233; horario te viene mejor, o sug&#237;ere una alternativa.`;\n\nconst closingName = isEN ? 'Best regards,' : 'Saludos cordiales,';\nconst greeting   = isEN ? 'Hello' : 'Hola';\n\nconst emailHtml = `<!DOCTYPE html><html lang='${lang}'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'></head><body style='margin:0;padding:0;background:#FBFBFA;font-family:Arial,Helvetica,sans-serif;'><table width='100%' cellpadding='0' cellspacing='0' style='background:#FBFBFA;'><tr><td align='center' style='padding:40px 20px;'><table width='100%' cellpadding='0' cellspacing='0' style='background:#FFFFFF;border:1px solid #EAEAEA;max-width:580px;'><tr><td style='padding:26px 36px;border-bottom:2px solid #111111;'><span style='font-size:19px;font-family:Georgia,serif;font-weight:600;color:#111111;letter-spacing:-.01em;'>SISTEG</span></td></tr><tr><td style='padding:36px 36px 0;'><p style='font-size:16px;color:#111111;margin:0 0 16px;'>${greeting} <b>${form.nombre}</b>,</p><p style='font-size:14px;color:#444444;line-height:1.75;margin:0 0 20px;'>${intro1}</p><p style='font-size:14px;color:#444444;line-height:1.75;margin:0 0 14px;'>${intro2}</p><ul style='padding:0;margin:0 0 24px;'>${slotsHtml}</ul><p style='font-size:14px;color:#444444;line-height:1.75;margin:0 0 32px;'>${closing1}</p><hr style='border:none;border-top:1px solid #EAEAEA;margin:0 0 24px;'><p style='font-size:14px;color:#444444;margin:0 0 4px;'>${closingName}<br><b>Equipo SISTEG</b></p><a href='mailto:info@sisteg.net' style='font-size:13px;color:#767676;text-decoration:none;'>info@sisteg.net</a></td></tr><tr><td style='padding:18px 36px;background:#F9F9F8;border-top:1px solid #EAEAEA;'><p style='font-size:11px;color:#AAAAAA;margin:0;'>&copy; 2025 SISTEG &middot; Latinoam&eacute;rica &amp; United States</p></td></tr></table></td></tr></table></body></html>`;\n\nreturn [{ json: { ...form, slots, emailSubject, emailHtml } }];"
+      }
+    },
+    {
+      "id": "node-005-gmail",
+      "name": "Enviar Email de Confirmacion",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [1160, 300],
+      "parameters": {
+        "sendTo": "={{ $json.correo }}",
+        "subject": "={{ $json.emailSubject }}",
+        "emailType": "html",
+        "message": "={{ $json.emailHtml }}",
+        "options": {
+          "replyTo": "info@sisteg.net"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Formulario": {
+      "main": [
+        [{ "node": "Crear Lead en Google Sheets", "type": "main", "index": 0 }]
+      ]
+    },
+    "Crear Lead en Google Sheets": {
+      "main": [
+        [{ "node": "Obtener Eventos Calendario", "type": "main", "index": 0 }]
+      ]
+    },
+    "Obtener Eventos Calendario": {
+      "main": [
+        [{ "node": "Horarios y Email", "type": "main", "index": 0 }]
+      ]
+    },
+    "Horarios y Email": {
+      "main": [
+        [{ "node": "Enviar Email de Confirmacion", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "saveDataSuccessExecution": "all",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "meta": {
+    "instanceId": ""
+  }
+}
