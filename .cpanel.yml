@@ -1,0 +1,7 @@
+# cPanel Git Version Control deployment for the staging site.
+# Deploy only this branch's static website to https://www.sisteg.net/newsite/
+# Confirm that $HOME/public_html is the document root for sisteg.net in cPanel.
+---
+deployment:
+  tasks:
+    - /bin/bash -c 'set -eu; TARGET="$HOME/public_html/newsite"; /bin/mkdir -p "$TARGET"; /bin/cp -f index.html "$TARGET/index.html"; for file in favicon.ico robots.txt; do if [ -f "$file" ]; then /bin/cp -f "$file" "$TARGET/$file"; fi; done; if [ -d assets ]; then /bin/cp -R assets/. "$TARGET/assets/"; fi'
