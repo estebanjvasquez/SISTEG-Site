@@ -136,7 +136,7 @@
 
     .metrics-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}.metric-card{padding:24px;border:1px solid rgba(255,255,255,.12);border-radius:24px;background:rgba(255,255,255,.06)}.metric-card strong{display:block;font-size:clamp(34px,4vw,52px);line-height:1;letter-spacing:-.07em;color:#fff}.metric-card span{display:block;margin-top:12px;color:#a9b7cc;font-size:13px;font-weight:750}
 
-    .industries-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.industry-card{padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.045);display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:800;color:#253044}.industry-card span{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));box-shadow:0 0 0 6px rgba(22,104,255,.08)}
+    .industries-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.industry-card{padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.045);display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:800;color:#253044}.industry-card > span:last-child{flex:0 0 10px;width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));box-shadow:0 0 0 6px rgba(22,104,255,.08)}.industry-card > span:first-child{flex:1 1 auto;min-width:0;width:auto;height:auto;border-radius:0;background:none;box-shadow:none;overflow-wrap:break-word;line-height:1.45}
 
     .cases-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.case-card{border:1px solid var(--line);border-radius:28px;background:#fff;overflow:hidden;box-shadow:0 16px 44px rgba(15,23,42,.06)}.case-top{padding:22px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fbfdff,#fff)}.case-top small{display:inline-flex;margin-bottom:14px;color:var(--blue);font-weight:900;text-transform:uppercase;letter-spacing:.1em}.case-top h3{font-size:24px}.case-body{padding:22px}.before-after{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}.ba{padding:14px;border-radius:16px;background:#f7f9fc}.ba.after{background:#eef8ff}.ba span{display:block;margin-bottom:4px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#7d899b}.ba strong{font-size:13px;color:var(--ink)}.case-metric{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-top:18px;border-top:1px solid var(--line)}.case-metric strong{font-size:28px;letter-spacing:-.06em;color:var(--ink)}.case-metric span{font-size:12px;font-weight:800;color:var(--muted);text-align:right}
 
@@ -265,6 +265,35 @@
     @media(max-width:640px){
       #soluciones-comerciales .services-grid,
       #aplicaciones .services-grid{grid-template-columns:minmax(0,1fr)}
+    }
+
+  
+    /* Specific visual regression fixes confirmed by staging screenshots. */
+    #audit .audit-cta h2{
+      color:#ffffff!important;
+      -webkit-text-fill-color:#ffffff;
+      background:none!important;
+      text-shadow:none;
+      opacity:1;
+    }
+    #audit .audit-cta .audit-grid,
+    #audit .audit-cta .audit-grid > div{min-width:0}
+    #industrias .industries-grid{align-items:stretch}
+    #industrias .industry-card{
+      display:flex;align-items:center;justify-content:space-between;
+      min-width:0;min-height:76px;height:auto;gap:18px;
+      padding:18px 20px;overflow:visible;
+    }
+    #industrias .industry-card > span:first-child{
+      display:block;position:static;flex:1 1 auto;
+      width:auto!important;height:auto!important;min-width:0;
+      color:#253044;background:none!important;box-shadow:none!important;
+      border-radius:0!important;line-height:1.4;overflow-wrap:normal;
+      white-space:normal;
+    }
+    #industrias .industry-card > span:last-child{
+      display:block;position:static;flex:0 0 10px;
+      width:10px!important;height:10px!important;align-self:center;
     }
 
   </style>
