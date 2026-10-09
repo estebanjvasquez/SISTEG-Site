@@ -209,6 +209,64 @@
       .contact-panel,form{padding:20px}
       .eyebrow{letter-spacing:.07em}
     }
+  
+    /* Hotfix: explicit light-section card colors and intrinsic content sizing.
+       Earlier rules changed only the background and paragraph color; headings
+       inherited the global white text color used by the dark services section. */
+    #soluciones-comerciales .service-card,
+    #aplicaciones .service-card{
+      box-sizing:border-box;background:#ffffff;color:#142235;
+      border:1px solid #d6e0ed;box-shadow:0 10px 28px rgba(15,35,65,.06);
+      overflow:visible;min-width:0;min-height:0;height:auto;
+      display:flex;flex-direction:column;align-items:stretch;gap:0;
+    }
+    #soluciones-comerciales .service-card:hover,
+    #aplicaciones .service-card:hover{
+      background:#f7faff;color:#142235;border-color:#a7c4ed;
+    }
+    #soluciones-comerciales .service-card h3,
+    #aplicaciones .service-card h3{
+      color:#142235!important;line-height:1.3;
+      font-size:clamp(17px,1.6vw,21px);overflow-wrap:anywhere;
+      word-break:normal;max-width:100%;min-width:0;
+    }
+    #soluciones-comerciales .service-card p,
+    #aplicaciones .service-card p{
+      color:#39495f!important;line-height:1.65;
+      overflow-wrap:anywhere;word-break:normal;max-width:100%;
+      min-width:0;flex:1 1 auto;
+    }
+    #soluciones-comerciales .service-card .service-icon,
+    #aplicaciones .service-card .service-icon{
+      background:#e8f1ff;color:#0845a3;border:1px solid #b9d3f8;
+      margin-bottom:18px;flex:0 0 auto;
+    }
+    #soluciones-comerciales .service-card .btn,
+    #aplicaciones .service-card .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:100%;max-width:100%;min-width:0;margin-top:16px;
+      padding:12px 16px;line-height:1.35;white-space:normal;
+      overflow-wrap:anywhere;box-sizing:border-box;
+    }
+    #soluciones-comerciales .service-card .btn-ghost,
+    #aplicaciones .service-card .btn-ghost{
+      background:#eaf2ff;color:#0845a3;border:1px solid #a7c4ed;
+    }
+    #soluciones-comerciales .service-card .btn-ghost:hover,
+    #aplicaciones .service-card .btn-ghost:hover{
+      background:#dbeafe;color:#07367f;
+    }
+    #soluciones-comerciales .services-grid,
+    #aplicaciones .services-grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;
+    }
+    #soluciones-comerciales .service-card.wide,
+    #aplicaciones .service-card.wide{grid-column:auto}
+    @media(max-width:640px){
+      #soluciones-comerciales .services-grid,
+      #aplicaciones .services-grid{grid-template-columns:minmax(0,1fr)}
+    }
+
   </style>
 </head>
 <body>
